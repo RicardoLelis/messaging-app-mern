@@ -3,11 +3,12 @@ import mongoose from 'mongoose'
 import Cors from 'cors'
 import Pusher from 'pusher'
 import Messages from './dbMessages.js'
+import config from './config.js'
 
 // App config
 const app = express()
 const port = process.env.PORT || 9000
-const connection_url = "mongodb+srv://admin:VBGwyn*AYyaxUXKnJ@cluster0.x0czx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+const connection_url = `mongodb+srv://admin:${config.DB_KEY}@cluster0.x0czx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
 
 // Middleware
 app.use(express.json())
@@ -20,11 +21,11 @@ mongoose.connect(connection_url, async (err) => {
 })
 
 const pusher = new Pusher({
-    appId: "1290105",
-    key: "6e9871ac51ee4c39104a",
-    secret: "498c4a88d06b729aa3d4",
-    cluster: "eu",
-    useTLS: true
+    appId: config.appId,
+    key: config.key,
+    secret: config.secret,
+    cluster: config.cluster,
+    useTLS: config.useTLS
 })
 // API Endpoints
 const db = mongoose.connection
@@ -43,7 +44,7 @@ db.once("open", () => {
                 received: messageDetails.received
             })
         } else {
-            console.log("Error trigerring Pusher")
+            console.log('Error trigerring Pusher')
         }
     })
 })

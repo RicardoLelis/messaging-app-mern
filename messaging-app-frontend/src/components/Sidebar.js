@@ -1,5 +1,6 @@
 import React from 'react'
 import './Sidebar.css'
+import { useStateValue } from './StateProvider'
 
 import DonutLargeIcon from '@material-ui/icons/DonutLarge'
 import ChatIcon from '@material-ui/icons/Chat'
@@ -9,12 +10,14 @@ import { Avatar, IconButton } from '@material-ui/core'
 
 
 import SidebarChat from './SidebarChat'
-const Sidebar = () => {
+const Sidebar = ({ messages }) => {
+    const [{ user }, dispatch] = useStateValue()
+
     return (
         <div className="sidebar">
             <div className="sidebar__header">
                 <Avatar
-                    src="https://pbs.twimg.com/profile_images/1462374835/mon1_400x400.jpg"
+                    src={user?.photoURL}
                 />
 
                 <div className="sidebar__headerRight">
@@ -36,9 +39,7 @@ const Sidebar = () => {
                 </div>
             </div>
             <div className="sidebar__chats">
-                <SidebarChat />
-                <SidebarChat />
-                <SidebarChat />
+                <SidebarChat messages={messages} />
             </div>
         </div>
     )
